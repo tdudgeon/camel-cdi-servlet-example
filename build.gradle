@@ -1,7 +1,6 @@
 
 apply plugin: 'war'
 apply plugin: 'groovy'
-//apply plugin: 'com.bmuschko.tomcat'
 apply plugin: 'org.akhikhl.gretty'
 
 buildscript {
@@ -10,7 +9,6 @@ buildscript {
     }
 
     dependencies {
-//        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.4'
         classpath 'org.akhikhl.gretty:gretty:+'
     }
 }
@@ -28,11 +26,6 @@ dependencies {
     compile 'org.apache.camel:camel-servlet:2.16.2'
     compile 'org.apache.camel:camel-cdi:2.16.2'
 
-//    def tomcatVersion = '7.0.68'
-//    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-//            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
-//            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
-
 
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
 
@@ -43,15 +36,9 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.11'
+    gradleVersion = '2.12'
     jarFile = 'wrapper/wrapper.jar'
 }
-
-
-//tomcat {
-//    enableSSL = false
-//    contextPath = 'camel-cdi'
-//}
 
 gretty {
     // supported values: 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'

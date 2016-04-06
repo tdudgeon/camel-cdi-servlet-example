@@ -5,7 +5,7 @@ import org.apache.camel.cdi.ContextName;
 
 import javax.inject.Inject;
 
-@ContextName("hello")
+@ContextName("myContext")
 public class HelloRoute extends RouteBuilder {
 
     @Inject
@@ -22,6 +22,7 @@ public class HelloRoute extends RouteBuilder {
                 .produces("text/plain")
                 .get("hello")
                 .route()
+                //.threads().executorServiceRef(Factory.THREAD_POOL_PROFILE)
                 .transform().constant("Hello World!")
                 .endRest()
                 .get("hello/{name}")
