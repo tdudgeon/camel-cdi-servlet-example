@@ -5,7 +5,6 @@ import org.apache.camel.cdi.ContextName;
 
 import javax.inject.Inject;
 
-@ContextName("myContext")
 public class HelloRoute extends RouteBuilder {
 
     @Inject
