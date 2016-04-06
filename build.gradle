@@ -1,0 +1,59 @@
+
+apply plugin: 'war'
+apply plugin: 'groovy'
+//apply plugin: 'com.bmuschko.tomcat'
+apply plugin: 'org.akhikhl.gretty'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+//        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.4'
+        classpath 'org.akhikhl.gretty:gretty:+'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+    compile 'org.slf4j:slf4j-simple:1.7.7'
+    compile 'org.jboss.weld.servlet:weld-servlet-core:2.3.2.Final'
+
+    compile 'org.apache.camel:camel-core:2.16.2'
+    compile 'org.apache.camel:camel-servlet:2.16.2'
+    compile 'org.apache.camel:camel-cdi:2.16.2'
+
+//    def tomcatVersion = '7.0.68'
+//    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+//            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+//            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+
+    compile 'org.codehaus.groovy:groovy-all:2.4.1'
+
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testCompile 'junit:junit:4.11'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+    jarFile = 'wrapper/wrapper.jar'
+}
+
+
+//tomcat {
+//    enableSSL = false
+//    contextPath = 'camel-cdi'
+//}
+
+gretty {
+    // supported values: 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
+    servletContainer = 'tomcat7'
+}
