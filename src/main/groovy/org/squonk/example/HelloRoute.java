@@ -1,7 +1,6 @@
 package org.squonk.example;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.cdi.ContextName;
 
 import javax.inject.Inject;
 
@@ -21,7 +20,7 @@ public class HelloRoute extends RouteBuilder {
                 .produces("text/plain")
                 .get("hello")
                 .route()
-                //.threads().executorServiceRef(Factory.THREAD_POOL_PROFILE)
+                .threads().executorServiceRef(CustomCamelContext.THREAD_POOL_PROFILE)
                 .transform().constant("Hello World!")
                 .endRest()
                 .get("hello/{name}")
