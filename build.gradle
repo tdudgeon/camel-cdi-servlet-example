@@ -19,15 +19,16 @@ repositories {
 
 dependencies {
 
-    compile 'org.slf4j:slf4j-simple:1.7.7'
-    compile 'org.jboss.weld.servlet:weld-servlet-core:2.3.2.Final'
+    compile 'org.slf4j:slf4j-jdk14:1.7.25'
+    compile 'org.jboss.weld.servlet:weld-servlet-core:3.0.4.Final'
 
-    compile 'org.apache.camel:camel-core:2.17.1'
-    compile 'org.apache.camel:camel-servlet:2.17.1'
-    compile 'org.apache.camel:camel-cdi:2.17.1'
+    def camelVersion='2.21.1'
+    compile "org.apache.camel:camel-core:$camelVersion"
+    compile "org.apache.camel:camel-servlet:$camelVersion"
+    compile "org.apache.camel:camel-cdi:$camelVersion"
 
 
-    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
     compile 'org.codehaus.groovy:groovy-all:2.4.1'
 
@@ -36,11 +37,11 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+    gradleVersion = '4.8'
     jarFile = 'wrapper/wrapper.jar'
 }
 
 gretty {
     // supported values: 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
-    servletContainer = 'tomcat7'
+    servletContainer = 'tomcat8'
 }
