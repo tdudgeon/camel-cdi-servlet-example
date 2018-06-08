@@ -4,7 +4,10 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
+import javax.activation.DataHandler;
 import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Map;
 
 public class HelloRoute extends RouteBuilder {
 
@@ -23,13 +26,9 @@ public class HelloRoute extends RouteBuilder {
                 .get("hello")
                 .route()
                 .threads().executorServiceRef(CustomCamelContext.THREAD_POOL_PROFILE)
-                .process(new Processor() {
-
-                    @Override
-                    public void process(Exchange exchange) throws Exception {
+                .process((exchange) -> {
                         Long l = exchange.getIn().getHeader("foobarbaz", Long.class);
                         System.out.println("L: " + l);
-                    }
                 })
                 .transform().constant("Hello World!")
                 .endRest()
@@ -37,5 +36,32 @@ public class HelloRoute extends RouteBuilder {
                 .route()
                 .bean("hello")
                 .log("${body}");
+
+        rest("/multi/")
+                .produces("text/plain")
+                .post()
+                .route()
+                .unmarshal().mimeMultipart()
+                .process((exchange) -> {
+                    // the body is now the first form field
+                    String contentType = exchange.getIn().getHeader(Exchange.CONTENT_TYPE, String.class);
+                    System.out.println(String.format("Body Content-Type: %s", contentType));
+                    System.out.println(String.format("Body:\n%s", exchange.getIn().getBody(String.class)));
+
+                    // the first attachment is the second form field
+                    Map<String,DataHandler> attachments = exchange.getIn().getAttachments();
+                    System.out.println(String.format("Attachments: %s", attachments.size()));
+                    exchange.getIn().getAttachments().forEach((id, dh) -> {
+                        try {
+                            Object content = dh.getContent();
+                            System.out.println(String.format("%s %s %s\n%s", id, dh.getContentType(), dh.getName(), content.toString()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    });
+                })
+                .transform(constant("OK\n"))
+                .endRest();
     }
 }
